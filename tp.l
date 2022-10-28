@@ -2,8 +2,7 @@
     #include <stdio.h>
     #include <stdlib.h>
     //void erreur(char* nError);
-    int ligne=1 ,colonne=0,nb=0;
-    void init(int a);
+    int ligne=1 ,colonne=0;
 %}
 
 %option noyywrap
@@ -11,37 +10,85 @@
 lettre [a-z]
 lettremaj [A-Z]
 chiffre [0-9]
-idf {lettremaj}{lettre}*{chiffre}*{lettre}*
-entier {chiffre}+
+tab [\t]
+vide [ \t]+
+saut_ligne [\n]+
+space [\s]+
+
+
+bool "true"|"false"
+int -?([1-9][0-9]*|0)
+float {int}\.[0-9]*[1-9]
+idf ({lettremaj}{lettre}*{chiffre}*{lettre}*){1,8}
+
+Varint "int"
+Varfloat "float"
+Varbool "bool"
+Varchar "char"
+commentaire [#.*\n]
+affectation "="
+
+comp "=="|"<"|"<="|"<>"|">"|">="
+and "and"
+or "or"
+not "not"
+op "+"|"-"|"*"|"/"
+
+if "if"
+else "else"
+for "for"
+inrange "in range"
+in "in"
+while "while"
+
+vg ","
+paropen "\("
+parclose "\)"
+curlopen "\{"
+curlclose "\}"
+apostrophe "'"
+squaropen "\["
+squarclose "\]"
+
+
+
+
 %%
-"int"  {printf ("%s est un mot cle\n",yytext);colonne+=yyleng;init(nb);}
-"float" {printf("%s est un mot cle\n",yytext);colonne+=yyleng;init(nb);}
-"char" {printf("%s est un mot cle\n",yytext);colonne+=yyleng;init(nb);}
-"bool" {printf("%s est un mot cle \n",yytext);colonne+=yyleng;init(nb);}  
-"if" {printf("%s est un mot cle\n",yytext);colonne+=yyleng;init(nb);}
-"else" {printf("%s est un mot cle\n",yytext);colonne+=yyleng;init(nb);}
-"for" {printf("%s est un mot cle\n",yytext);colonne+=yyleng;}
-"in range" {printf("%s est unm mot cle\n",yytext);}
-"#" {printf("un debut de commentaire ");ligne++;colonne=0;};
-"while" {printf("%s est un mot cle\n",yytext);colonne+=yyleng;init(nb);}  
-{idf} {if(yyleng<=8){printf("%s est un idf\n",yytext); colonne+=yyleng;init(nb);} else{printf("idf too long");}}
-{entier} {printf("%s est un entier++++\n",yytext); colonne+=yyleng;init(nb);}
-"+" {printf ("additon\n"); colonne+=yyleng;init(nb);}
-"-" {printf ("soustraction\n"); colonne+=yyleng;init(nb);}
-"*" {printf ("multiplication\n"); colonne+=yyleng;init(nb);}
-"/" {printf ("division\n"); colonne+=yyleng;init(nb);}
-"=" {printf ("egalité\n"); colonne+=yyleng;init(nb);}
-":" {printf("un separateur\n");colonne++;}
-"and" {printf("operateur logique and\n");colonne+=yyleng;init(nb);}
-"or" {printf("operateur logique or\n");colonne+=yyleng;init(nb);}
-"not" {printf("operateur logique not\n");colonne+=yyleng;init(nb);}
-">" {printf("superieur\n");colonne+=yyleng;init(nb);}
-"<" {printf("inferieur\n");colonne+=yyleng;init(nb);}
-">=" {printf("superieur ou egale\n");colonne=yyleng;init(nb);}
-"<=" {printf("inferieur ou egale\n");colonne+=yyleng;init(nb);}
-"!=" {printf("different\n");colonne+=yyleng;init(nb);}
-"\n" {ligne++; init(colonne);init(nb);}
-" " {colonne++;nb++;if(nb==4){printf("!\n");}}
+{Varint}  {printf ("%s est un mot cle\n",yytext);colonne+=yyleng;}
+{Varfloat} {printf("%s est un mot cle\n",yytext);colonne+=yyleng;}
+{Varbool} {printf("%s est un mot cle\n",yytext);colonne+=yyleng;}
+{Varchar} {printf("%s est un mot cle \n",yytext);colonne+=yyleng;} 
+{if} {printf("%s est un mot cle\n",yytext);colonne+=yyleng;}
+{else} {printf("%s est un mot cle\n",yytext);colonne+=yyleng;}
+{for} {printf("%s est un mot cle\n",yytext);colonne+=yyleng;}
+{while} {printf("%s est un mot cle\n",yytext);colonne+=yyleng;} 
+{inrange} {printf("%s est unm mot cle\n",yytext);}
+{idf} {if(yyleng<=8){printf("%s est un idf\n",yytext); colonne+=yyleng;} else{printf("it worked\n");}
+////////////////////////////////////////////////////////////////////////////////
+{int} {printf("%s est un entier\n",yytext);colonne+=yyleng;}
+{float} {printf("%s est un reel\n",yytext);colonne+=yyleng;}
+{bool} {printf("%s est un boolean\n",yytext);colonne+=yyleng;}
+//////////////////////////////////////////////////////////////////////////
+{op} {printf ("%s est un operateur arithmetique\n",yytext); colonne+=yyleng;}
+{not} {printf("%s est un operateur logique\n",yytext);colonne+=yyleng;}
+{and} {printf("%s est un operateur logique\n",yytext);colonne+=yyleng;}
+{or} {printf("%s est un operateur logique\n",yytext);colonne+=yyleng;}
+{comp} {printf("%s est un operateur de comparaison\n",yytext);colonne+=yyleng;}
+//////////////////////////////////////////////////////////////////////////////
+":" {printf("%s est un separateur\n",yytext);colonne++;}
+{squarclose} {printf("%s est un separateur\n",yytext);colonne++;}
+{squaropen} {printf("%s est un separateur\n",yytext);colonne++;}
+{parclose} {printf("%s est un separateur\n",yytext);colonne++;}
+{paropen} {printf("%s est un separateur\n",yytext);colonne++;}
+{curlclose} {printf("%s est un separateur\n",yytext);colonne++;}
+{curlopen} {printf("%s est un separateur\n",yytext);colonne++;}
+{vg} {printf("%s est un separateur\n",yytext);colonne++;}
+///////////////////////////////////////////////////////////////////////////////
+{commentaire} {printf(" commentaire\n");ligne++;colonne=0;}
+{saut_ligne} {ligne++; init(colonne);}
+{space} {colonne++;}
+{tab} {colonne+=yyleng;}
+{vide} {colonne+=yyleng;}
 . {printf ("erreur lexicale ligne %d, colonne %d\n",ligne,colonne);}
 %%
 
@@ -53,16 +100,12 @@ int main(){
     fclose(yyin);
     return 0;
 }
-/*void erreur(char* nError){
+/*void erreur(int nError){
     switch (nError) {
-        case ("idf too long"):
+        case (1):
             printf("the idf is too long");
             break;
         default:
             printf ("erreur lexicale ligne %d, colonne %d\n",ligne,colonne);
     }
 }*/
-
-void init(int a){
-    a=0;
-}
