@@ -1,1 +1,7 @@
-Yousra
+#Ler pogramme calcule la somme des X premiers termes d’une suite
+# arithmétique
+int X=50
+Resultat =0
+while (X!=0) :
+    Resultat = Resultat + X
+    X = X-1
