@@ -1,6 +1,9 @@
 #Ler pogramme calcule la somme des X premiers termes d’une suite
 # arithmétique
 int X=50
+A1
+Ab1
+Resultatif
 Resultat =0
 while (X!=0) :
     Resultat = Resultat + X

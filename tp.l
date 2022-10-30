@@ -18,7 +18,7 @@ space " "
 bool "true"|"false"
 int -?([1-9][0-9]*|0)
 float {int}\.[0-9]*[1-9]
-idf ({lettremaj}{lettre}*{chiffre}*{lettre}*){1,8}
+idf {lettremaj}{lettre}*{chiffre}*{lettre}*
 
 Varint "int"
 Varfloat "float"
@@ -62,7 +62,7 @@ squarclose "\]"
 {for} {printf("%s est un mot cle\n",yytext);colonne+=yyleng;}
 {while} {printf("%s est un mot cle\n",yytext);colonne+=yyleng;} 
 {inrange} {printf("%s est unm mot cle\n",yytext);}
-{idf} {if(yyleng<=8){printf("%s est un idf\n",yytext); colonne+=yyleng;} else{printf("error");}}
+{idf} {if(yyleng<=8){printf("%s est un idf\n",yytext); colonne+=yyleng;} else{printf("error\n");}}
 {int} {printf("%s est un entier\n",yytext);colonne+=yyleng;}
 {float} {printf("%s est un reel\n",yytext);colonne+=yyleng;}
 {bool} {printf("%s est un boolean\n",yytext);colonne+=yyleng;}
@@ -81,7 +81,7 @@ squarclose "\]"
 {curlopen} {printf("%s est un separateur\n",yytext);colonne++;}
 {vg} {printf("%s est un separateur\n",yytext);colonne++;}
 {commentaire} {printf(" commentaire\n");ligne++;colonne=0;}
-{saut_ligne} {ligne++;}
+{saut_ligne} {ligne++;colonne=0;}
 {space} {colonne++;}
 {tab} {colonne+=yyleng;}
 {vide} {colonne+=yyleng;}
