@@ -1,7 +1,9 @@
 %{
     #include <stdio.h>
     #include <stdlib.h>
-    int ligne=1 ,colonne=1;
+    #include "minipy.tab.h"
+    extern YYSTYPE yylval;
+    extern int ligne=1 ,colonne=1;
 %}
 
 %option noyywrap
@@ -53,34 +55,34 @@ squarclose "\]"
 
 
 %%
-{Varint}  {printf ("%s est un mot cle\n",yytext);colonne+=yyleng;}
-{Varfloat} {printf("%s est un mot cle\n",yytext);colonne+=yyleng;}
-{Varbool} {printf("%s est un mot cle\n",yytext);colonne+=yyleng;}
-{Varchar} {printf("%s est un mot cle \n",yytext);colonne+=yyleng;} 
-{if} {printf("%s est un mot cle\n",yytext);colonne+=yyleng;}
-{else} {printf("%s est un mot cle\n",yytext);colonne+=yyleng;}
-{for} {printf("%s est un mot cle\n",yytext);colonne+=yyleng;}
-{while} {printf("%s est un mot cle\n",yytext);colonne+=yyleng;} 
-{inrange} {printf("%s est unm mot cle\n",yytext);}
-{idf} {if(yyleng<=8){printf("%s est un idf\n",yytext); colonne+=yyleng;} else{printf("error\n");}}
-{int} {printf("%s est un entier\n",yytext);colonne+=yyleng;}
-{float} {printf("%s est un reel\n",yytext);colonne+=yyleng;}
-{bool} {printf("%s est un boolean\n",yytext);colonne+=yyleng;}
-{op} {printf ("%s est un operateur arithmetique\n",yytext); colonne+=yyleng;}
-{not} {printf("%s est un operateur logique\n",yytext);colonne+=yyleng;}
-{and} {printf("%s est un operateur logique\n",yytext);colonne+=yyleng;}
-{or} {printf("%s est un operateur logique\n",yytext);colonne+=yyleng;}
-{comp} {printf("%s est un operateur de comparaison\n",yytext);colonne+=yyleng;}
-":" {printf("%s est un separateur\n",yytext);colonne++;}
-{affectation} {printf("une affectation\t");colonne++;}
-{squarclose} {printf("%s est un separateur\n",yytext);colonne++;}
-{squaropen} {printf("%s est un separateur\n",yytext);colonne++;}
-{parclose} {printf("%s est un separateur\n",yytext);colonne++;}
-{paropen} {printf("%s est un separateur\n",yytext);colonne++;}
-{curlclose} {printf("%s est un separateur\n",yytext);colonne++;}
-{curlopen} {printf("%s est un separateur\n",yytext);colonne++;}
-{vg} {printf("%s est un separateur\n",yytext);colonne++;}
-{commentaire} {printf(" commentaire\n");ligne++;colonne=0;}
+{Varint}  {yylval.str=strdup(yytext);colonne+=yyleng;return token_Varint}
+{Varfloat} {yylval.str=strdup(yytext);colonne+=yyleng;}
+{Varbool} {yylval.str=strdup(yytext);colonne+=yyleng;}
+{Varchar} {yylval.str=strdup(yytext);colonne+=yyleng;} 
+{if} {yylval.str=strdup(yytext);colonne+=yyleng;}
+{else} {yylval.str=strdup(yytext);colonne+=yyleng;}
+{for} {yylval.str=strdup(yytext);colonne+=yyleng;}
+{while} {yylval.str=strdup(yytext);colonne+=yyleng;} 
+{inrange} {yylval.str=strdup(yytext);colonne+=yyleng;}
+{idf} {if(yyleng<=8){yylval.str=strdup(yytext); colonne+=yyleng;} else{printf("error\n");}}
+{int} {yylval.entier=atoi(yytext);colonne+=yyleng;}
+{float} {yylval.float=atof(yytext);colonne+=yyleng;}
+{bool} {yylval.str=strdup(yytext);colonne+=yyleng;}
+{op} {yylval.str=strdup(yytext); colonne+=yyleng;}
+{not} {yylval.str=strdup(yytext);colonne+=yyleng;}
+{and} {yylval.str=strdup(yytext);colonne+=yyleng;}
+{or} {yylval.str=strdup(yytext);colonne+=yyleng;}
+{comp} {yylval.str=strdup(yytext);colonne+=yyleng;}
+":" {yylval.str=strdup(yytext);colonne++;}
+{affectation} {yylval.str=strdup(yytext);colonne++;}
+{squarclose} {yylval.str=strdup(yytext);colonne++;}
+{squaropen} {yylval.str=strdup(yytext);colonne++;}
+{parclose} {yylval.str=strdup(yytext);colonne++;}
+{paropen} {yylval.str=strdup(yytext);colonne++;}
+{curlclose} {yylval.str=strdup(yytext);colonne++;}
+{curlopen} {yylval.str=strdup(yytext);colonne++;}
+{vg} {yylval.str=strdup(yytext);colonne++;}
+{commentaire} {ligne++;colonne=0;}
 {saut_ligne} {ligne++;colonne=0;}
 {space} {colonne++;}
 {tab} {colonne+=yyleng;}
