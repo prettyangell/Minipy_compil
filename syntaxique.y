@@ -10,15 +10,7 @@ int colonne=1,ligne=1;
    float real;
    char* str;
 }
-%token LIST_DEC LIST_INST DEC_TAB
-%token <str>mc_idf <entier>mc_int_signe <entier>mc_int_nsigne <str>mc_char <real>mc_float_signe
-%token <real>mc_float_nsigne mc_bool mc_const mc_var 
-%token mc_point mc_vg mc_comm  mc_saut mc_curop mc_curcl mc_sqcl mc_sqop mc_prcl mc_prop 
-%token mc_sup mc_inf mc_inf_eql mc_sup_eql mc_not_eql mc_eql
-%token mc_aff mc_else mc_while mc_inrange mc_if mc_for
-%token mc_varint mc_varfloat mc_varchar mc_varbool mc_varconst 
-%token mc_add mc_div mc_sub mc_mult
-%token mc_not mc_and mc_or
+%token mc_LIST_DEC mc_LIST_INST mc_LIST_IDF mc_DEC_VAR mc_DEC_TAB mc_VAL mc_AFFICTATION mc_EXPRESSION mc_EXP_PAR mc_TYPE_VAR mc_OP_COMP mc_OP_LOG mc_OPR_LOGIQUE_COMPARISON mc_COND_CASE mc_CONDITION mc_IF_ELSE mc_IF_SIMPLE mc_BOUCLE mc_OPERANDE mc_OPERATEUR mc_EXP_SIMPLE  <str>mc_idf <entier>mc_int_signe <entier>mc_int_nsigne <str>mc_char <real>mc_float_signe <real>mc_float_nsigne mc_bool mc_const mc_var mc_point mc_vg mc_comm mc_saut mc_curop mc_curcl mc_sqcl mc_sqop mc_prcl mc_prop mc_sup mc_inf mc_inf_eql mc_sup_eql mc_not_eql mc_eql mc_aff mc_else mc_while mc_inrange mc_if mc_for mc_varint mc_varfloat mc_varchar mc_varbool mc_varconst mc_add mc_div mc_sub mc_mult mc_not mc_and mc_or 
 
 %left mc_sup mc_sup_eql mc_eql mc_not_eql mc_inf_eql mc_inf 
 %left mc_add mc_sub 
@@ -35,7 +27,7 @@ List_Dec:DEC_VAR
         |DEC_TAB
 ;
 //declaration d'un variable
-Dec_Var:TYPE_VAR LIST_IDF
+DEC_TAB:TYPE_VAR LIST_IDF
        |mc_idf mc_aff VAL 
 ;      
 //declaration d'un tableau int T[5]
@@ -81,7 +73,7 @@ EXP_SIMPLE:OPERANDE OPERATEUR OPERANDE
           |mc_char 'c'
 ;
 
-Exp_par:mc_prop EXP_SIMPLE mc_prcl 
+EXP_PAR:mc_prop EXP_SIMPLE mc_prcl 
        |mc_prop EXP_PAR mc_prcl 
        |mc_prop EXP_SIMPLE mc_prcl OPERATEUR EXPRESSION
        |mc_prop EXP_SIMPLE mc_prcl OPERATEUR OPERANDE
@@ -96,10 +88,10 @@ OPERANDE:mc_float_signe
         |mc_idf
 ;
 
-OPERATEUR:op_add {strcpy(saveopr,"+");}
-         |op_div {strcpy(saveopr,"/");}
-         |op_sub {strcpy(saveopr,"-");}
-         |op_mul {strcpy(saveopr,"*");}
+OPERATEUR:mc_add {strcpy(saveopr,"+");}
+         |mc_div {strcpy(saveopr,"/");}
+         |mc_sub {strcpy(saveopr,"-");}
+         |mc_mul {strcpy(saveopr,"*");}
 ;
 CONDITION:IF_SIMPLE
          |IF_ELSE
@@ -135,7 +127,6 @@ OP_COMP:mc_sup
        |mc_eql
 ;
 
-BOUCLE
 
 %%
 main(){
