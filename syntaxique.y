@@ -28,13 +28,13 @@ List_Dec:Dec_Var List_Dec
         |Dec_Var
         |Dec_Tab List_Dec
         |Dec_Tab
-//declaration d'un variable
+
 Dec_Var:Type_Var List_Idf //int x
        |mc_idf mc_eql Val //x=5
-//declaration d'un tableau int T[5]
+       
 Dec_Tab:Type_Var mc_idf mc_sqop mc_taille mc_sqcl
 
-List_Idf:mc_idf mc_vg List_Idf //t,h,...
+List_Idf:mc_idf mc_vg List_Idf
         |mc_idf mc_saut
         
 Val:mc_float_signe
@@ -42,6 +42,7 @@ Val:mc_float_signe
    |mc_int_nsigne
    |mc_int_signe
    |mc_char
+   
 Type_Var:mc_varint   {strcpy(sauvType,"INT");}
         |mc_varfloat {strcpy(sauvType,"FLOAT");}
         |mc_varbool  {strcpy(sauvType,"BOOL");}
