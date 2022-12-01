@@ -1,7 +1,7 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
-#include "minipy.tab.h"
+#include "syntaxique.tab.h"
 extern YYSTYPE yylval;
 extern int ligne=1 ,colonne=1;
 
