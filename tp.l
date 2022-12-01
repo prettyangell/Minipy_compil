@@ -70,12 +70,28 @@ inrange "inrange"
 
 
 %%
-List_Dec  {colonne+=yyleng; return mc_List_Dec;}
-List_Inst {colonne+=yyleng; return mc_List_Inst;}
-Dec_Var   {colonne+=yyleng; return mc_Dec_Var;}
-Type_Var  {colonne+=yyleng; return mc_Type_Var;}
-Val       {colonne+=yyleng; return mc_Val;}
-Dec_Tab   {colonne+=yyleng; return mc_Dec_Tab;}
+LIST_DEC               {colonne+=yyleng; return mc_LIST_DEC;}
+LIST_INST              {colonne+=yyleng; return mc_LIST_INST;}
+LIST_IDF               {colonne+=yyleng; return mc_LIST_IDF;}                
+DEC_VAR                {colonne+=yyleng; return mc_DEC_VAR;}
+TYPE_VAR               {colonne+=yyleng; return mc_TYPE_VAR;}
+VAL                    {colonne+=yyleng; return mc_VAL;}
+DEC_TAB                {colonne+=yyleng; return mc_DEC_TAB;}
+AFFICTATION            {colonne+=yyleng; return mc_AFFICTATION;}
+EXPRESSION             {colonne+=yyleng; return mc_EXPRESSION;}
+EXP_PAR                {colonne+=yyleng; return mc_EXP_PAR;}
+EXP_SIMPLE             {colonne+=yyleng; return mc_EXP_SIMPLE;}
+OPERANDE               {colonne+=yyleng; return mc_OPERANDE;}
+OPERATEUR              {colonne+=yyleng; return mc_OPERATEUR;}
+CONDITION              {colonne+=yyleng; return mc_CONDITION;}
+IF_SIMPLE              {colonne+=yyleng; return mc_IF_SIMPLE;}
+IF_ELSE                {colonne+=yyleng; return mc_IF_ELSE;}
+BOUCLE                 {colonne+=yyleng; return mc_BOUCLE;}
+COND_CASE              {colonne+=yyleng; return mc_COND_CASE;}
+OPR_LOGIQUE_COMPARISON {colonne+=yyleng; return mc_OPR_LOGIQUE_COMPARISON;}
+OP_COMP                {colonne+=yyleng; return mc_OP_COMP;}
+OP_LOG                 {colonne+=yyleng; return mc_OP_LOG;}
+
 {Varconst} {printf ("%s est un mot cle\n",yytext);colonne+=yyleng;return mc_varconst}
 {Varint} {printf ("%s est un mot cle\n",yytext);colonne+=yyleng;return mc_varint}
 {Varfloat} {printf("%s est un mot cle\n",yytext);colonne+=yyleng;return mc_varfloat}
